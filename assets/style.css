@@ -125,10 +125,7 @@ footer {
   justify-content: space-between;
 }
 
-.task-actions button,
-.task-actions select {
-  flex: 1;
-}
+.task-actions button, .task-actions select {flex: 1;}
 
 .btn {
   outline: none;
@@ -174,7 +171,7 @@ footer {
   -webkit-appearance: none;
   appearance: none;
   background-color: #fff;
-  background-image: url("../images/select-arrow.svg");
+  background-image: url("select-arrow.svg");
   background-repeat: no-repeat, repeat;
   background-position: right 0.7em top 50%, 0 0;
   background-size: 0.65em auto, 100%;
