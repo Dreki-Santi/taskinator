@@ -12,7 +12,7 @@ var buttonEl = document.querySelector("#save-task");
 console.log(buttonEl);*/
 //---------------------------------------------------
 
-//Start
+// global Start
 var taskIdCounter = 0;
 
 var pageMainEl = document.querySelector("#page-content");
@@ -23,7 +23,7 @@ var tasksToDoEl = document.querySelector("#tasks-to-do");
 var tasksInProgressEl = document.querySelector("#tasks-in-progress");
 var tasksCompletedEl = document.querySelector("#tasks-completed");
 
-
+// functions start 
 
 var taskFormHandler = function(event) {
     event.preventDefault();
@@ -133,10 +133,10 @@ var createTaskActions = function(taskId) {
     return actionContainerEl;
 }
 
-
+// Submitting task
 formEl.addEventListener("submit", taskFormHandler);
 
-// finds specific <button>
+// finds specific <button> function
 var taskButtonHandler = function(event) {
     //console.log(event.target);
 
@@ -202,6 +202,7 @@ var deleteTask = function(taskId) {
     taskSelected.remove();
 }
 
+// edit or delete the referenced task
 pageMainEl.addEventListener("click", taskButtonHandler);
 
 var taskStatusChangeHandler = function(event) {
@@ -227,4 +228,5 @@ var taskStatusChangeHandler = function(event) {
     }
 }
 
+// moves task to correct progress column based on current selected option
 pageMainEl.addEventListener("change", taskStatusChangeHandler);
