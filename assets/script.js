@@ -261,6 +261,8 @@ var dropZoneDragHandler = function(event) {
         event.preventDefault();
         // verify drop zone
         //console.dir(taskListEl);
+
+        taskListEl.setAttribute("style", "background: rgba(68, 233, 255, 0.7); border-style: dashed;");
     }
 }
 
@@ -294,7 +296,21 @@ var dropTaskHandler = function(event) {
         statusSelectEl.selectedIndex = 2;
     }
 
+    dropZonesEl.removeAttribute("style");
+
     dropZonesEl.appendChild(draggableElement);
 }
 
 pageMainEl.addEventListener("drop", dropTaskHandler);
+
+// remove the css from the task columns
+var dragLeaveHandler = function(event) {
+    //console.dir(event.target);
+
+    var taskListEl = event.target.closest(".task-list");
+    if(taskListEl) {
+        taskListEl.removeAttribute("style");
+    }
+}
+
+pageMainEl.addEventListener("dragleave", dragLeaveHandler);
