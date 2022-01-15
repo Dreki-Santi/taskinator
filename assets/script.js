@@ -71,6 +71,9 @@ var createTaskEl = function(taskDataObj) {
     // add task id as a custom attribute
     listItemEl.setAttribute("data-task-id", taskIdCounter);
 
+    // add draggable functionality to the task items
+    listItemEl.setAttribute("draggable", "true");
+
     // create div to hold task info and add to list item
     var taskInfoEl = document.createElement("div");
     taskInfoEl.className = "task-info";
@@ -230,3 +233,68 @@ var taskStatusChangeHandler = function(event) {
 
 // moves task to correct progress column based on current selected option
 pageMainEl.addEventListener("change", taskStatusChangeHandler);
+
+// start of the drag task item functionality 
+var dragTaskHandler = function(event) {
+    //console.log("event.target:", event.target);
+    //console.log("event.type", event.type);
+    //console.log("event", event);
+
+    var taskId = event.target.getAttribute("data-task-id");
+    /*console.log("task id:", taskId);
+    console.log("event", event);*/
+    
+    // store task id in datatransfer, which is a data storage property
+    event.dataTransfer.setData("text/plain", taskId);
+    var getId = event.dataTransfer.getData("text/plain");
+    //console.log("getId:", getId, typeof getId);
+}
+
+pageMainEl.addEventListener("dragstart", dragTaskHandler);
+
+var dropZoneDragHandler = function(event) {
+    //console.log("Dragover event target:", event.target);
+
+    // prevent the drop from snapping back to OG location, unless in the correct locations
+    var taskListEl = event.target.closest(".task-list");
+    if(taskListEl) {
+        event.preventDefault();
+        // verify drop zone
+        //console.dir(taskListEl);
+    }
+}
+
+pageMainEl.addEventListener("dragover", dropZoneDragHandler);
+
+var dropTaskHandler = function(event) {
+    var id = event.dataTransfer.getData("text/plain");
+    //console.log("Drop event target:", event.target, event.dataTransfer, id);
+
+    //locate the task item through unique id (data-task-id)
+    var draggableElement = document.querySelector("[data-task-id='" + id + "']");
+    //console.log(draggableElement);
+    //console.dir(draggableElement);
+
+    // return the corresponding task list element of the drop zone
+    var dropZonesEl = event.target.closest(".task-list");
+    var statusType = dropZonesEl.id;
+    //console.log(statusType);
+    //console.dir(dropZonesEl);
+
+    // set status of the task based on dropZone id
+    var statusSelectEl = draggableElement.querySelector("select[name='status-change']");
+    //console.log(statusSelectEl);
+    //console.dir(statusSelectEl);
+
+    if(statusType === "tasks-to-do") {
+        statusSelectEl.selectedIndex = 0;
+    } else if(statusType === "tasks-in-progress") {
+        statusSelectEl.selectedIndex = 1;
+    } else if(statusType === "tasks-completed") {
+        statusSelectEl.selectedIndex = 2;
+    }
+
+    dropZonesEl.appendChild(draggableElement);
+}
+
+pageMainEl.addEventListener("drop", dropTaskHandler);
