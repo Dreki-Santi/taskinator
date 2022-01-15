@@ -95,7 +95,7 @@ var createTaskEl = function(taskDataObj) {
     // add entire list item to list
     tasksToDoEl.appendChild(listItemEl);
 
-    // add id property to tasjDataObj
+    // add id property to taskDataObj
     taskDataObj.id = taskIdCounter;
     // pushes the content from taskDataObj to the array
     tasks.push(taskDataObj);
@@ -317,6 +317,8 @@ var dropZoneDragHandler = function(event) {
 pageMainEl.addEventListener("dragover", dropZoneDragHandler);
 
 var dropTaskHandler = function(event) {
+    event.preventDefault();
+
     var id = event.dataTransfer.getData("text/plain");
     //console.log("Drop event target:", event.target, event.dataTransfer, id);
 
@@ -376,3 +378,21 @@ pageMainEl.addEventListener("dragleave", dragLeaveHandler);
 var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+
+var loadTasks = function() {
+    var savedTasks = localStorage.getItem("tasks");
+
+    if(!savedTasks) {
+        return false;
+    } 
+
+    savedTasks = JSON.parse(savedTasks);
+
+    // loop through savedTasks array
+    for(var i = 0; i < savedTasks.length; i++) {
+        // pass each task obj into createTaskEl()
+        createTaskEl(savedTasks[i]);
+    }
+}
+
+loadTasks();
